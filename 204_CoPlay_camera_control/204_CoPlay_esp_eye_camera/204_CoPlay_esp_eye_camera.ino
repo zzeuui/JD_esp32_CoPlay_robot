@@ -25,8 +25,11 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char* ssid = "SK_WiFiGIGA73BA_2.4G";
-const char* password = "1609043407";
+//const char* ssid = "SK_WiFiGIGA73BA_2.4G";
+//const char* password = "1609043407";
+
+const char* ssid = "AndroidHotspot9807";
+const char* password = "2384Jeong";
 
 //void startCameraServer();
 //void setupLedFlash(int pin);

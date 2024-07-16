@@ -1,8 +1,5 @@
 #include <driver/ledc.h>
 
-#define DEFAULT_LEDC_FREQ 20000
-#define DEFAULT_LEDC_RANGE LEDC_TIMER_10_BIT
-
 class Tb6612_motor{
 public:
   Tb6612_motor(int ia_, int ib_, int pwm_){
@@ -17,37 +14,36 @@ public:
     pinMode(ib, OUTPUT);
     pinMode(16, OUTPUT);
     digitalWrite(16, HIGH);
-    ledcSetup(LEDC_CHANNEL_0, DEFAULT_LEDC_FREQ, LEDC_TIMER_10_BIT);
-    ledcAttachPin(pwm, LEDC_CHANNEL_0 );
+    ledcAttach(pwm, 5000, 8 );
   }
 
   void move_forward(int speed_){
     speed = speed_;
     if(speed < 0)
       speed = 0;
-    if(speed > 1024)
-      speed = 1024;
+    if(speed > 255)
+      speed = 255;
     digitalWrite(ia, HIGH);
     digitalWrite(ib, LOW);
-    ledcWrite(LEDC_CHANNEL_0, speed);
+    ledcWrite(pwm, speed);
   }
 
   void move_backward(int speed_){
     speed = speed_;
     if(speed < 0)
       speed = 0;
-    if(speed > 1024)
-      speed = 1024;
+    if(speed > 255)
+      speed = 255;
     digitalWrite(ia, LOW);
     digitalWrite(ib, HIGH);
-    ledcWrite(LEDC_CHANNEL_0, speed);
+    ledcWrite(pwm, speed);
   }
 
   void motor_stop(){
     speed = 0;
     digitalWrite(ia, LOW);
     digitalWrite(ib, LOW);
-    ledcWrite(LEDC_CHANNEL_0, speed);
+    ledcWrite(pwm, speed);
   }
 
   int ia;
@@ -57,22 +53,13 @@ public:
 };
 
 #define MSLEEP  16
-//#define IA1     14
-//#define IB1     12
-//#define PWM1    13
-#define IA2     27
-#define IB2     26
-#define PWM2    25
-#define IA3     17
-#define IB3     5
-#define PWM3    18
-#define IA4     4
-#define IB4     2
-#define PWM4    15
+#define IA1     26
+#define IB1     27
+#define PWM1    25
+#define IA2     14
+#define IB2     12
+#define PWM2    13
 
-int IA1 = 14;
-int IB1 = 12;
-int PWM1 = 13; 
 
 Tb6612_motor mt1(IA1, IB1, PWM1);
 //Tb6612_motor mt2(IA2, IB2, PWM2);
