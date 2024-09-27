@@ -20,8 +20,9 @@
 /***************************************
  *  WiFi
  **************************************/
-#define WIFI_SSID   "codinglab2G(2)"
-#define WIFI_PASSWD "codinglab"
+
+#define WIFI_SSID  "SO070VOIP8335"
+#define WIFI_PASSWD "8D38048334"
 
 const char *host = "192.168.0.131";
 const uint16_t port = 5005;
@@ -31,11 +32,11 @@ const uint16_t port = 5005;
 String macAddress = "";
 String ipAddress = "";
 
-#if defined(BUTTON_1)
+//#if defined(BUTTON_1)
 //Depend BME280 library ,See https://github.com/mathertel/OneButton
-#include <OneButton.h>
-OneButton button(BUTTON_1, true);
-#endif
+//#include <OneButton.h>
+//OneButton button(BUTTON_1, true);
+//#endif
 
 // Depend OLED library ,See  https://github.com/ThingPulse/esp8266-oled-ssd1306
 #include "SSD1306.h"
@@ -100,7 +101,7 @@ bool setupDisplay()
 void loopDisplay()
 {
     if (ui.update()) {
-        button.tick();
+      //  button.tick();
     }
 }
 
@@ -192,7 +193,7 @@ void setupNetwork()
     macAddress += WiFi.macAddress().substring(0, 5);
 }
 
-void setupButton()
+/*void setupButton()
 {
     button.attachClick([]() {
         static bool en = false;
@@ -226,7 +227,7 @@ void setupButton()
         esp_sleep_enable_ext1_wakeup(((uint64_t)(((uint64_t)1) << BUTTON_1)), ESP_EXT1_WAKEUP_ALL_LOW);
         esp_deep_sleep_start();
     });
-}
+}*/
 
 void setup()
 {
@@ -243,7 +244,7 @@ void setup()
     if (!status) {
         delay(10000); esp_restart();
     }
-    setupButton();
+    //setupButton();
     setupNetwork();
     Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
 }

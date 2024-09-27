@@ -2,7 +2,7 @@
     T_Camera_V162_VERSION
 */
 
-#define PWDN_GPIO_NUM       -1
+/*#define PWDN_GPIO_NUM       26
 #define RESET_GPIO_NUM      -1
 #define XCLK_GPIO_NUM       32
 #define SIOD_GPIO_NUM       13
@@ -30,8 +30,9 @@
 
 #define AS312_PIN           33
 
-#define ENABLE_IP5306
-/*#define PWDN_GPIO_NUM       -1
+#define ENABLE_IP5306*/
+
+#define PWDN_GPIO_NUM       -1
 #define RESET_GPIO_NUM      -1
 #define XCLK_GPIO_NUM       4
 #define SIOD_GPIO_NUM       18
@@ -62,4 +63,4 @@
 #define IIS_WS              32
 #define IIS_DOUT            33
 
-#define ENABLE_IP5306*/
+#define ENABLE_IP5306

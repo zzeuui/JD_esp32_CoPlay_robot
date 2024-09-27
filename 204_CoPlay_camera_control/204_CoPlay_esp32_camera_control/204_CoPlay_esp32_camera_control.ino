@@ -21,8 +21,11 @@
 /***************************************
  *  WiFi
  **************************************/
-#define WIFI_SSID   "ConnectValue_A403_2G"
-#define WIFI_PASSWD "CVA402!@#$"
+//#define WIFI_SSID   "ConnectValue_A403_2G"
+//#define WIFI_PASSWD "CVA402!@#$"
+
+#define WIFI_SSID  "SO070VOIP8335"
+#define WIFI_PASSWD "8D38048334"
 
 // Moth server setting 
 const char* websockets_server_host = "cobot.center";
@@ -222,7 +225,7 @@ void setupNetwork()
     /*
       Mars rover 2023 mass product version 
     */
-    while(!client.connect(websockets_server_host, websockets_server_port, "/pang/ws/pub?channel=bqjnn7mg10l575d6ns3g&track=video")) { 
+    while(!client.connect(websockets_server_host, websockets_server_port, "/pang/ws/pub?channel=bq5ame6g10l3jia3h0ng&track=video")) { 
         delay(500);
         Serial.print(".");
         oled.clear();

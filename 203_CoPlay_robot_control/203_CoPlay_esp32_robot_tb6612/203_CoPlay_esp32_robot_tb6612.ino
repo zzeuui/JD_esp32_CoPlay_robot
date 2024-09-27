@@ -4,15 +4,13 @@
 #include <WiFi.h>
 #include <ArduinoWebsockets.h>
 
-#define M1_B    26
-#define M1_A    27
-#define M2_B    12
-#define M2_A    14
-#define M3_B    15
-#define M3_A    2
-#define M4_B    4
-#define M4_A    16
-
+#define MSLEEP  16
+#define IA1     26
+#define IB1     27
+#define PWM1    25
+#define IA2     14
+#define IB2     12
+#define PWM2    13
 #define CONNECTED   23
 
 //#define WIFI_SSID  "SK_WiFiGIGA73BA_2.4G"
@@ -83,69 +81,106 @@ void onEventsCallback(WebsocketsEvent event, String data) {
 
 void go_forward(){
     Serial.println("forward");
-    digitalWrite(M1_A, LOW);
-    digitalWrite(M1_B, HIGH);
-    digitalWrite(M2_A, LOW);
-    digitalWrite(M2_B, HIGH);
-
-    digitalWrite(M3_A, HIGH);
-    digitalWrite(M3_B, LOW);
-    digitalWrite(M4_A, HIGH);
-    digitalWrite(M4_B, LOW);
+    motor1_move_forward(255);
+    motor2_move_forward(255);
    
 }
 
 void go_backward(){
     Serial.println("backward");
-    digitalWrite(M1_A, HIGH);
-    digitalWrite(M1_B, LOW);
-    digitalWrite(M2_A, HIGH);
-    digitalWrite(M2_B, LOW);
-
-    digitalWrite(M3_A, LOW);
-    digitalWrite(M3_B, HIGH);
-    digitalWrite(M4_A, LOW);
-    digitalWrite(M4_B, HIGH);
+    motor1_move_backward(255);
+    motor2_move_backward(255);
 }
 
 void turn_right(){
     Serial.println("right");
-    digitalWrite(M1_A, LOW);
-    digitalWrite(M1_B, HIGH);
-    digitalWrite(M2_A, LOW);
-    digitalWrite(M2_B, HIGH);
-
-    digitalWrite(M3_A, LOW);
-    digitalWrite(M3_B, HIGH);
-    digitalWrite(M4_A, LOW);
-    digitalWrite(M4_B, HIGH);
+    motor1_move_forward(255);
+    motor2_move_backward(255);
 }
 
 void turn_left(){
     Serial.println("left");
-    digitalWrite(M1_A, HIGH);
-    digitalWrite(M1_B, LOW);
-    digitalWrite(M2_A, HIGH);
-    digitalWrite(M2_B, LOW);
-
-    digitalWrite(M3_A, HIGH);
-    digitalWrite(M3_B, LOW);
-    digitalWrite(M4_A, HIGH);
-    digitalWrite(M4_B, LOW);
+    motor1_move_backward(255);
+    motor2_move_forward(255);
 }
 
 void stop(){
     Serial.println("stop");
-    digitalWrite(M1_A, LOW);
-    digitalWrite(M1_B, LOW);
-    digitalWrite(M2_A, LOW);
-    digitalWrite(M2_B, LOW);
-    
-    digitalWrite(M3_A, LOW);
-    digitalWrite(M3_B, LOW);
-    digitalWrite(M4_A, LOW);
-    digitalWrite(M4_B, LOW);
+     motor1_stop();
+     motor2_stop();
     delay(200);
+}
+
+void motor_enable(int m_sleep){
+  pinMode(m_sleep, OUTPUT);
+  digitalWrite(m_sleep, HIGH);
+}
+
+void motor1_begin(int ia1, int ib1, int pwm1){
+  pinMode(ia1, OUTPUT);
+  pinMode(ib1, OUTPUT);
+  //ledcSetup(LEDC_CHANNEL_0, DEFAULT_LEDC_FREQ, LEDC_TIMER_10_BIT);
+  ledcAttach(pwm1, 5000, 8 );
+}
+
+void motor2_begin(int ia2, int ib2, int pwm2 ){
+  pinMode(ia2, OUTPUT);
+  pinMode(ib2, OUTPUT);
+  //ledcSetup(LEDC_CHANNEL_0, DEFAULT_LEDC_FREQ, DEFAULT_LEDC_RANGE);
+  ledcAttach(pwm2, 5000, 8);
+}
+
+void motor1_move_forward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA1, HIGH);
+  digitalWrite(IB1, LOW);
+  ledcWrite(PWM1, speed);
+}
+
+void motor2_move_forward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA2, HIGH);
+  digitalWrite(IB2, LOW);
+  ledcWrite(PWM2, speed);
+}
+
+void motor1_move_backward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA1, LOW);
+  digitalWrite(IB1, HIGH);
+  ledcWrite(PWM1, speed);
+}
+
+void motor2_move_backward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA2, LOW);
+  digitalWrite(IB2, HIGH);
+  ledcWrite(PWM2, speed);
+}
+
+
+void motor1_stop(){
+  digitalWrite(IA1, LOW);
+  digitalWrite(IB1, LOW);
+  ledcWrite(PWM1, 0);
+}
+
+void motor2_stop(){
+  digitalWrite(IA2, LOW);
+  digitalWrite(IB2, LOW);
+  ledcWrite(PWM2, 0);
 }
 
 
@@ -153,14 +188,11 @@ void setup() {
     Serial.begin(115200);
     Serial.print("ACT ground robot Start...");
 
-    pinMode(M1_A, OUTPUT);
-    pinMode(M1_B, OUTPUT);
-    pinMode(M2_A, OUTPUT);
-    pinMode(M2_B, OUTPUT);
-    pinMode(M3_A, OUTPUT);
-    pinMode(M3_B, OUTPUT);
-    pinMode(M4_A, OUTPUT);
-    pinMode(M4_B, OUTPUT);
+    motor1_begin(IA1, IB1, PWM1);
+    motor2_begin(IA2, IB2, PWM2);
+    //motor3_setup(IA1, IB1, PWM3);
+    //motor4_setup(IA1, IB1, PWM4);
+    motor_enable(MSLEEP);
 
     pinMode(CONNECTED, OUTPUT);
 
@@ -180,7 +212,7 @@ void setup() {
 
     client.onMessage(onMessageCallback);
     client.onEvent(onEventsCallback);
-    // c3rl3c86n88jq9lrl3gg MarsRover-1
+    // 2024/09/25 test0 bq5ame6g10l3jia3h0ng
     while (!client.connect(websockets_server_host, websockets_server_port, "/pang/ws/pub?channel=bq5ame6g10l3jia3h0ng&track=colink&mode=bundle"))
     {
         delay(500);

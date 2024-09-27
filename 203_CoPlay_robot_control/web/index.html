@@ -892,6 +892,7 @@
       } else {
         wsurl = `ws://${host}:${port}/pang/ws/${camAPIOption.mode}?channel=${camAPIOption.channel}&track=video`;
       }
+      console.log(ws);
       
       // cam channel websocket 
       ws = new WebSocket(wsurl);
@@ -899,6 +900,7 @@
 
       // websocket open event 
       ws.onopen = function(evt) {
+        console.log(ws);
         connCamImgChange("on");
       }
 
