@@ -38,12 +38,12 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char* ssid = "ConnectValue_A403_2G";
-const char* password = "CVA403!@#$";
+//const char* ssid = "ConnectValue_A403_2G";
+//const char* password = "CVA403!@#$";
 
 
-//const char* ssid = "SO070VOIP8335";
-//const char* password = "8D38048334";
+const char* ssid = "SO070VOIP8335";
+const char* password = "8D38048334";
 
 // Moth server setting 
 const char* websockets_server_host = "cobot.center";

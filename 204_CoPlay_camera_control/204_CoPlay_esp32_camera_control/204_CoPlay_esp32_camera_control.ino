@@ -22,7 +22,7 @@
  *  WiFi
  **************************************/
 //#define WIFI_SSID   "ConnectValue_A403_2G"
-//#define WIFI_PASSWD "CVA402!@#$"
+//#define WIFI_PASSWD "CVA403!@#$"
 
 #define WIFI_SSID  "SO070VOIP8335"
 #define WIFI_PASSWD "8D38048334"

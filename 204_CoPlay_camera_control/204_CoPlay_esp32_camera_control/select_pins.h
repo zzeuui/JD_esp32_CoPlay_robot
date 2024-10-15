@@ -1,8 +1,9 @@
 /*
     T_Camera_V162_VERSION
 */
-
-/*#define PWDN_GPIO_NUM       26
+// TTgo  new wverson 
+/*
+#define PWDN_GPIO_NUM       26
 #define RESET_GPIO_NUM      -1
 #define XCLK_GPIO_NUM       32
 #define SIOD_GPIO_NUM       13
@@ -30,8 +31,10 @@
 
 #define AS312_PIN           33
 
-#define ENABLE_IP5306*/
 
+#define ENABLE_IP5306
+*/
+// TTgo T-camera  old version 
 #define PWDN_GPIO_NUM       -1
 #define RESET_GPIO_NUM      -1
 #define XCLK_GPIO_NUM       4
