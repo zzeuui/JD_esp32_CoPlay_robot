@@ -5,20 +5,26 @@
 #include <ArduinoWebsockets.h>
 
 #define MSLEEP  16
-#define IA1     26
-#define IB1     27
-#define PWM1    25
-#define IA2     14
-#define IB2     12
-#define PWM2    13
+#define IA1     14
+#define IB1     12
+#define PWM1    13
+#define IA2     27
+#define IB2     26
+#define PWM2    25
+#define IA3     17
+#define IB3     5
+#define PWM3    18
+#define IA4     4
+#define IB4     2
+#define PWM4    15
 #define CONNECTED   23
 
 //#define WIFI_SSID  "SK_WiFiGIGA73BA_2.4G"
 //#define WIFI_PASSWD "1609043407"
 
 
-#define WIFI_SSID  "SO070VOIP8335"
-#define WIFI_PASSWD "8D38048334"
+#define WIFI_SSID  "ConnectValue_A403_2G"
+#define WIFI_PASSWD "CVA403!@#$"
 
 String macAddress = "";
 String ipAddress = "";
@@ -83,6 +89,8 @@ void go_forward(){
     Serial.println("forward");
     motor1_move_forward(255);
     motor2_move_forward(255);
+    motor3_move_forward(255);
+    motor4_move_forward(255);
    
 }
 
@@ -90,24 +98,32 @@ void go_backward(){
     Serial.println("backward");
     motor1_move_backward(255);
     motor2_move_backward(255);
+    motor3_move_backward(255);
+    motor4_move_backward(255);
 }
 
 void turn_right(){
     Serial.println("right");
     motor1_move_forward(255);
-    motor2_move_backward(255);
+    motor2_move_forward(255);
+    motor3_move_backward(255);
+    motor4_move_backward(255);
 }
 
 void turn_left(){
     Serial.println("left");
     motor1_move_backward(255);
-    motor2_move_forward(255);
+    motor2_move_backward(255);
+    motor3_move_forward(255);
+    motor4_move_forward(255);
 }
 
 void stop(){
     Serial.println("stop");
      motor1_stop();
      motor2_stop();
+      motor3_stop();
+     motor4_stop();
     delay(200);
 }
 
@@ -130,13 +146,27 @@ void motor2_begin(int ia2, int ib2, int pwm2 ){
   ledcAttach(pwm2, 5000, 8);
 }
 
+void motor3_begin(int ia3, int ib3, int pwm3){
+  pinMode(ia3, OUTPUT);
+  pinMode(ib3, OUTPUT);
+  //ledcSetup(LEDC_CHANNEL_0, DEFAULT_LEDC_FREQ, LEDC_TIMER_10_BIT);
+  ledcAttach(pwm3, 5000, 8 );
+}
+
+void motor4_begin(int ia4, int ib4, int pwm4 ){
+  pinMode(ia4, OUTPUT);
+  pinMode(ib4, OUTPUT);
+  //ledcSetup(LEDC_CHANNEL_0, DEFAULT_LEDC_FREQ, DEFAULT_LEDC_RANGE);
+  ledcAttach(pwm4, 5000, 8);
+}
+
 void motor1_move_forward(int speed){
   if(speed < 0)
     speed = 0;
   if(speed > 255)
     speed = 255;
-  digitalWrite(IA1, HIGH);
-  digitalWrite(IB1, LOW);
+  digitalWrite(IA1, LOW);
+  digitalWrite(IB1, HIGH);
   ledcWrite(PWM1, speed);
 }
 
@@ -150,13 +180,33 @@ void motor2_move_forward(int speed){
   ledcWrite(PWM2, speed);
 }
 
+void motor3_move_forward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA3, HIGH);
+  digitalWrite(IB3, LOW);
+  ledcWrite(PWM3, speed);
+}
+
+void motor4_move_forward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA4, LOW);
+  digitalWrite(IB4, HIGH);
+  ledcWrite(PWM4, speed);
+}
+
 void motor1_move_backward(int speed){
   if(speed < 0)
     speed = 0;
   if(speed > 255)
     speed = 255;
-  digitalWrite(IA1, LOW);
-  digitalWrite(IB1, HIGH);
+  digitalWrite(IA1, HIGH);
+  digitalWrite(IB1, LOW);
   ledcWrite(PWM1, speed);
 }
 
@@ -168,6 +218,26 @@ void motor2_move_backward(int speed){
   digitalWrite(IA2, LOW);
   digitalWrite(IB2, HIGH);
   ledcWrite(PWM2, speed);
+}
+
+void motor3_move_backward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA3, LOW);
+  digitalWrite(IB3, HIGH);
+  ledcWrite(PWM3, speed);
+}
+
+void motor4_move_backward(int speed){
+  if(speed < 0)
+    speed = 0;
+  if(speed > 255)
+    speed = 255;
+  digitalWrite(IA4, HIGH);
+  digitalWrite(IB4, LOW);
+  ledcWrite(PWM4, speed);
 }
 
 
@@ -183,6 +253,18 @@ void motor2_stop(){
   ledcWrite(PWM2, 0);
 }
 
+void motor3_stop(){
+  digitalWrite(IA3, LOW);
+  digitalWrite(IB3, LOW);
+  ledcWrite(PWM3, 0);
+}
+
+void motor4_stop(){
+  digitalWrite(IA4, LOW);
+  digitalWrite(IB4, LOW);
+  ledcWrite(PWM4, 0);
+}
+
 
 void setup() {
     Serial.begin(115200);
@@ -190,8 +272,8 @@ void setup() {
 
     motor1_begin(IA1, IB1, PWM1);
     motor2_begin(IA2, IB2, PWM2);
-    //motor3_setup(IA1, IB1, PWM3);
-    //motor4_setup(IA1, IB1, PWM4);
+    motor3_begin(IA3, IB3, PWM3);
+    motor4_begin(IA4, IB4, PWM4);
     motor_enable(MSLEEP);
 
     pinMode(CONNECTED, OUTPUT);
