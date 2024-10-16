@@ -38,12 +38,9 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-//const char* ssid = "ConnectValue_A403_2G";
-//const char* password = "CVA403!@#$";
+const char* ssid = "ConnectValue_A401_2G";
+const char* password = "CVA401!@#$";
 
-
-const char* ssid = "SO070VOIP8335";
-const char* password = "8D38048334";
 
 // Moth server setting 
 const char* websockets_server_host = "cobot.center";
@@ -197,7 +194,7 @@ void setup() {
     */
     //while(!client.connect(websockets_server_host, websockets_server_port, "/pang/ws/pub?channel=instant&name=mars_rover_cam2&track=<label>")) {
     /*
-      2024/09/27 test0 
+      Mars rover 2023 mass product version 
     */
     while(!client.connect(websockets_server_host, websockets_server_port, "/pang/ws/pub?channel=bq5ame6g10l3jia3h0ng&track=video")) { 
         delay(500);
